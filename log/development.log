@@ -1,0 +1,148 @@
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+  [1m[36m (408.6ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (258.9ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`)
+  [1m[36m (36.6ms)[0m  [1mSELECT `schema_migrations`.`version` FROM `schema_migrations` [0m
+Migrating to DoNothingYet (20100423211100)
+  [1m[35m (75.8ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100423211100')
+Migrating to CreateUsers (20100423211421)
+  [1m[36m (162.1ms)[0m  [1mCREATE TABLE `users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `first_name` varchar(25), `last_name` varchar(50), `email` varchar(255) DEFAULT '' NOT NULL, `password` varchar(40), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (32.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100423211421')
+Migrating to AlterUsers (20100423214919)
+  [1m[36m (96.2ms)[0m  [1mRENAME TABLE `users` TO `admin_users`[0m
+  [1m[35m (548.6ms)[0m  ALTER TABLE `admin_users` ADD `username` varchar(25)
+  [1m[36m (220.0ms)[0m  [1mALTER TABLE `admin_users` CHANGE `email` `email` varchar(100) DEFAULT '' NOT NULL[0m
+  [1m[35m (1.3ms)[0m  SHOW COLUMNS FROM `admin_users` LIKE 'password'
+  [1m[36m (202.1ms)[0m  [1mALTER TABLE `admin_users` CHANGE `password` `hashed_password` varchar(40) DEFAULT NULL[0m
+  [1m[35m (234.8ms)[0m  ALTER TABLE `admin_users` ADD `salt` varchar(40)
+  [1m[36m (333.8ms)[0m  [1mCREATE INDEX `index_admin_users_on_username` ON `admin_users` (`username`)[0m
+  [1m[35m (44.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100423214919')
+Migrating to CreateSubjects (20100423232138)
+  [1m[36m (106.0ms)[0m  [1mCREATE TABLE `subjects` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `position` int(11), `visible` tinyint(1) DEFAULT 0, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (32.1ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100423232138')
+Migrating to CreatePages (20100423232147)
+  [1m[36m (106.8ms)[0m  [1mCREATE TABLE `pages` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `subject_id` int(11), `name` varchar(255), `permalink` varchar(255), `position` int(11), `visible` tinyint(1) DEFAULT 0, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (200.1ms)[0m  CREATE INDEX `index_pages_on_subject_id` ON `pages` (`subject_id`)
+  [1m[36m (233.4ms)[0m  [1mCREATE INDEX `index_pages_on_permalink` ON `pages` (`permalink`)[0m
+  [1m[35m (44.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100423232147')
+Migrating to CreateSections (20100423232154)
+  [1m[36m (139.4ms)[0m  [1mCREATE TABLE `sections` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `page_id` int(11), `name` varchar(255), `position` int(11), `visible` tinyint(1) DEFAULT 0, `content_type` varchar(255), `content` text, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (222.6ms)[0m  CREATE INDEX `index_sections_on_page_id` ON `sections` (`page_id`)
+  [1m[36m (33.5ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20100423232154')[0m
+Migrating to CreateAdminUsersPagesJoin (20100426135018)
+  [1m[35m (118.0ms)[0m  CREATE TABLE `admin_users_pages` (`admin_user_id` int(11), `page_id` int(11)) ENGINE=InnoDB
+  [1m[36m (306.3ms)[0m  [1mCREATE INDEX `index_admin_users_pages_on_admin_user_id_and_page_id` ON `admin_users_pages` (`admin_user_id`, `page_id`)[0m
+  [1m[35m (83.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100426135018')
+Migrating to CreateSectionEdits (20100426145232)
+  [1m[36m (162.3ms)[0m  [1mCREATE TABLE `section_edits` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `admin_user_id` int(11), `section_id` int(11), `summary` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (172.6ms)[0m  CREATE INDEX `index_section_edits_on_admin_user_id_and_section_id` ON `section_edits` (`admin_user_id`, `section_id`)
+  [1m[36m (32.8ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20100426145232')[0m
+  [1m[35m (0.5ms)[0m  SELECT `schema_migrations`.`version` FROM `schema_migrations` 
+
+
+Started GET "/" for 127.0.0.1 at 2013-03-05 01:06:58 +0530
+Processing by PublicController#index as HTML
+Completed 500 Internal Server Error in 46ms
+
+LoadError (cannot load such file -- lib/position_mover):
+  app/models/subject.rb:1:in `<top (required)>'
+  app/controllers/public_controller.rb:19:in `setup_navigation'
+
+
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/_trace.erb (4.3ms)
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (2.6ms)
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (80.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-03-05 01:13:39 +0530
+Connecting to database specified by database.yml
+Processing by PublicController#index as HTML
+Completed 500 Internal Server Error in 24ms
+
+LoadError (cannot load such file -- lib/position_mover):
+  app/models/subject.rb:1:in `<top (required)>'
+  app/controllers/public_controller.rb:19:in `setup_navigation'
+
+
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/_trace.erb (2.3ms)
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (1.8ms)
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (23.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-03-05 01:33:02 +0530
+Connecting to database specified by database.yml
+Processing by PublicController#index as HTML
+  Rendered public/index.html.erb within layouts/public (36.1ms)
+  [1m[36mSubject Load (170.1ms)[0m  [1mSELECT `subjects`.* FROM `subjects` WHERE `subjects`.`visible` = 1 ORDER BY subjects.position ASC[0m
+  Rendered layouts/_navigation.html.erb (568.3ms)
+Completed 200 OK in 1011ms (Views: 243.6ms | ActiveRecord: 507.9ms)
+
+
+Started GET "/simple_cms" for 127.0.0.1 at 2013-03-05 01:33:20 +0530
+
+ActionController::RoutingError (No route matches [GET] "/simple_cms"):
+  actionpack (3.2.9) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  actionpack (3.2.9) lib/action_dispatch/middleware/show_exceptions.rb:56:in `call'
+  railties (3.2.9) lib/rails/rack/logger.rb:32:in `call_app'
+  railties (3.2.9) lib/rails/rack/logger.rb:16:in `block in call'
+  activesupport (3.2.9) lib/active_support/tagged_logging.rb:22:in `tagged'
+  railties (3.2.9) lib/rails/rack/logger.rb:16:in `call'
+  actionpack (3.2.9) lib/action_dispatch/middleware/request_id.rb:22:in `call'
+  rack (1.4.5) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.4.5) lib/rack/runtime.rb:17:in `call'
+  activesupport (3.2.9) lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+  rack (1.4.5) lib/rack/lock.rb:15:in `call'
+  actionpack (3.2.9) lib/action_dispatch/middleware/static.rb:62:in `call'
+  railties (3.2.9) lib/rails/engine.rb:479:in `call'
+  railties (3.2.9) lib/rails/application.rb:223:in `call'
+  rack (1.4.5) lib/rack/content_length.rb:14:in `call'
+  railties (3.2.9) lib/rails/rack/log_tailer.rb:17:in `call'
+  rack (1.4.5) lib/rack/handler/webrick.rb:59:in `service'
+  /home/sunny/.rvm/rubies/ruby-1.9.3-p392/lib/ruby/1.9.1/webrick/httpserver.rb:138:in `service'
+  /home/sunny/.rvm/rubies/ruby-1.9.3-p392/lib/ruby/1.9.1/webrick/httpserver.rb:94:in `run'
+  /home/sunny/.rvm/rubies/ruby-1.9.3-p392/lib/ruby/1.9.1/webrick/server.rb:191:in `block in start_thread'
+
+
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+
+
+Started GET "/one" for 127.0.0.1 at 2013-03-05 01:33:32 +0530
+
+ActionController::RoutingError (No route matches [GET] "/one"):
+  actionpack (3.2.9) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  actionpack (3.2.9) lib/action_dispatch/middleware/show_exceptions.rb:56:in `call'
+  railties (3.2.9) lib/rails/rack/logger.rb:32:in `call_app'
+  railties (3.2.9) lib/rails/rack/logger.rb:16:in `block in call'
+  activesupport (3.2.9) lib/active_support/tagged_logging.rb:22:in `tagged'
+  railties (3.2.9) lib/rails/rack/logger.rb:16:in `call'
+  actionpack (3.2.9) lib/action_dispatch/middleware/request_id.rb:22:in `call'
+  rack (1.4.5) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.4.5) lib/rack/runtime.rb:17:in `call'
+  activesupport (3.2.9) lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+  rack (1.4.5) lib/rack/lock.rb:15:in `call'
+  actionpack (3.2.9) lib/action_dispatch/middleware/static.rb:62:in `call'
+  railties (3.2.9) lib/rails/engine.rb:479:in `call'
+  railties (3.2.9) lib/rails/application.rb:223:in `call'
+  rack (1.4.5) lib/rack/content_length.rb:14:in `call'
+  railties (3.2.9) lib/rails/rack/log_tailer.rb:17:in `call'
+  rack (1.4.5) lib/rack/handler/webrick.rb:59:in `service'
+  /home/sunny/.rvm/rubies/ruby-1.9.3-p392/lib/ruby/1.9.1/webrick/httpserver.rb:138:in `service'
+  /home/sunny/.rvm/rubies/ruby-1.9.3-p392/lib/ruby/1.9.1/webrick/httpserver.rb:94:in `run'
+  /home/sunny/.rvm/rubies/ruby-1.9.3-p392/lib/ruby/1.9.1/webrick/server.rb:191:in `block in start_thread'
+
+
+  Rendered /home/sunny/.rvm/gems/ruby-1.9.3-p392/gems/actionpack-3.2.9/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+
+
+Started GET "/subjects" for 127.0.0.1 at 2013-03-05 01:33:38 +0530
+Processing by SubjectsController#index as HTML
+Redirected to http://localhost:3000/access/login
+Filter chain halted as :confirm_logged_in rendered or redirected
+Completed 302 Found in 3ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/access/login" for 127.0.0.1 at 2013-03-05 01:33:38 +0530
+Processing by AccessController#login as HTML
+  Rendered access/login.html.erb within layouts/admin (2.8ms)
+Completed 200 OK in 119ms (Views: 117.4ms | ActiveRecord: 0.0ms)
